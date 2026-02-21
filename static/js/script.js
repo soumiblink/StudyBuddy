@@ -67,3 +67,40 @@ if (photoInput)
 // Scroll to Bottom
 const conversationThread = document.querySelector(".room__box");
 if (conversationThread) conversationThread.scrollTop = conversationThread.scrollHeight;
+
+
+// Dropdown toggle
+const dropdownBtn = document.querySelector('.dropdown-button');
+
+if (dropdownBtn) {
+  dropdownBtn.addEventListener('click', (e) => {
+    e.stopPropagation(); // prevent closing immediately
+    dropdownMenu.classList.toggle('show');
+    dropdownMenu.style.maxHeight = dropdownMenu.classList.contains('show')
+      ? dropdownMenu.scrollHeight + "px"
+      : "0";
+  });
+}
+
+// Hamburger toggle
+const hamburger = document.querySelector('.hamburger');
+const header = document.querySelector('.header');
+
+if (hamburger) {
+  hamburger.addEventListener('click', () => {
+    header.classList.toggle('active');
+    hamburger.classList.toggle('open');
+  });
+}
+
+// Click outside to close dropdown
+document.addEventListener('click', function (e) {
+  if (
+    dropdownBtn &&
+    !dropdownBtn.contains(e.target) &&
+    !dropdownMenu.contains(e.target)
+  ) {
+    dropdownMenu.classList.remove('show');
+    dropdownMenu.style.maxHeight = "0";
+  }
+});
