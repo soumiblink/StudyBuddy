@@ -1,5 +1,6 @@
 # Virtual Environment
 env/
+venv/
 
 # Python cache
 __pycache__/
@@ -9,6 +10,7 @@ __pycache__/
 
 # Database
 db.sqlite3
+*.db
 
 # Environment variables
 .env
@@ -20,5 +22,12 @@ db.sqlite3
 .DS_Store
 Thumbs.db
 
-# Static build files (future)
+# Django static files
 staticfiles/
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/.env.local
