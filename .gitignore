@@ -25,6 +25,13 @@ Thumbs.db
 # Django static files
 staticfiles/
 
+# Logs
+logs/*.log
+logs/*.log.*
+
+# Media files
+media/
+
 # Frontend
 frontend/node_modules/
 frontend/.next/

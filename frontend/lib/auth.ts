@@ -18,7 +18,7 @@ export interface AuthResponse {
 
 export const authService = {
   async register(username: string, email: string, password: string, password2: string, name?: string): Promise<AuthResponse> {
-    const response = await api.post('/register/', { username, email, password, password2, name })
+    const response = await api.post('/v1/auth/register/', { username, email, password, password2, name })
     const { access, refresh, user } = response.data
     localStorage.setItem('access_token', access)
     localStorage.setItem('refresh_token', refresh)
@@ -27,12 +27,12 @@ export const authService = {
   },
 
   async login(email: string, password: string): Promise<AuthResponse> {
-    const response = await api.post('/token/', { email, password })
+    const response = await api.post('/v1/auth/login/', { email, password })
     const { access, refresh } = response.data
     localStorage.setItem('access_token', access)
     localStorage.setItem('refresh_token', refresh)
     
-    const userResponse = await api.get('/profile/')
+    const userResponse = await api.get('/v1/profile/')
     const user = userResponse.data
     localStorage.setItem('user', JSON.stringify(user))
     
@@ -63,12 +63,12 @@ export const authService = {
   },
 
   async getProfile(): Promise<User> {
-    const response = await api.get('/profile/')
+    const response = await api.get('/v1/profile/')
     return response.data
   },
 
   async updateProfile(data: Partial<User>): Promise<User> {
-    const response = await api.put('/profile/update/', data)
+    const response = await api.put('/v1/profile/update/', data)
     localStorage.setItem('user', JSON.stringify(response.data))
     return response.data
   },

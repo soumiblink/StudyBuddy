@@ -164,6 +164,11 @@ export default function RoomPage() {
                 <div>
                   <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
                     {room.name}
+                    {user?.id === room.host.id && (
+                      <span className="bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white text-xs px-3 py-1 rounded-full font-semibold">
+                        YOUR ROOM
+                      </span>
+                    )}
                     <span className={`flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-full ${
                       connected ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
                     }`}>
@@ -176,7 +181,7 @@ export default function RoomPage() {
                       <svg className="w-4 h-4 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
-                      {room.host.username}
+                      Host: {room.host.username}
                     </span>
                     <span className="flex items-center gap-1.5 font-medium">
                       <svg className="w-4 h-4 text-fuchsia-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">

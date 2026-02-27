@@ -1,15 +1,26 @@
-from django.urls import path
+from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from . import views
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
+from . import views, auth_views
 
-urlpatterns = [
+# API v1 URLs
+v1_patterns = [
+    # API Documentation
+    path('schema/', SpectacularAPIView.as_view(), name='api-schema'),
+    path('docs/', SpectacularSwaggerView.as_view(url_name='api-schema'), name='api-docs'),
+    path('redoc/', SpectacularRedocView.as_view(url_name='api-schema'), name='api-redoc'),
+    
     # API Routes
     path('', views.getRoutes, name='api-routes'),
     
     # Authentication
-    path('register/', views.register, name='api-register'),
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('auth/register/', views.register, name='api-register'),
+    path('auth/login/', TokenObtainPairView.as_view(), name='api-login'),
+    path('auth/token/refresh/', TokenRefreshView.as_view(), name='token-refresh'),
+    path('auth/password-reset/', auth_views.request_password_reset, name='password-reset-request'),
+    path('auth/password-reset/confirm/', auth_views.confirm_password_reset, name='password-reset-confirm'),
+    path('auth/email-verify/', auth_views.verify_email, name='email-verify'),
+    path('auth/email-verify/resend/', auth_views.resend_verification_email, name='email-verify-resend'),
     
     # User Profile
     path('profile/', views.get_user_profile, name='api-profile'),
@@ -29,4 +40,8 @@ urlpatterns = [
     # Messages
     path('messages/', views.MessageListCreateView.as_view(), name='api-messages'),
     path('messages/<str:pk>/', views.MessageDetailView.as_view(), name='api-message-detail'),
+]
+
+urlpatterns = [
+    path('v1/', include(v1_patterns)),
 ]

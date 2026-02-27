@@ -1,10 +1,13 @@
 from rest_framework import generics, status, permissions
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, throttle_classes
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from django_ratelimit.decorators import ratelimit
+from django.utils.decorators import method_decorator
 
 from base.models import Room, Topic, Message
 from .serializers import (
@@ -15,12 +18,22 @@ from .serializers import (
 User = get_user_model()
 
 
+# Custom Throttle Classes
+class LoginRateThrottle(AnonRateThrottle):
+    rate = '5/minute'
+
+
+class RegisterRateThrottle(AnonRateThrottle):
+    rate = '3/hour'
+
+
 # ==================== AUTHENTICATION ====================
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@throttle_classes([RegisterRateThrottle])
 def register(request):
-    """Register a new user"""
+    """Register a new user with email verification"""
     serializer = RegisterSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.save()
@@ -29,6 +42,7 @@ def register(request):
             'user': UserSerializer(user).data,
             'refresh': str(refresh),
             'access': str(refresh.access_token),
+            'message': 'Registration successful. Please check your email to verify your account.'
         }, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
