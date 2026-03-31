@@ -355,19 +355,7 @@ For more troubleshooting, see [SETUP_GUIDE.md](SETUP_GUIDE.md#-troubleshooting)
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## 👨‍💻 Author
 
-Built with ❤️ for the developer community
-
-## 🙏 Acknowledgments
-
-- Django and Django REST Framework teams
-- Next.js and Vercel teams
-- The open-source community
-
----
-
-**Happy Studying! 📚✨**
 
 
 
